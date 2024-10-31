@@ -1,0 +1,42 @@
+<div id='connectButton'></div>
+<div id='tweetBox'></div>
+<script type='text/javascript'>
+twttr.anywhere( function( twitter ) {
+
+	if (twitter.isConnected()) {
+		var User = twitter.currentUser;
+		document.getElementById('connectButton').innerHTML = [
+			'<img src="', User.data('profile_image_url'), '"> ', User.data('screen_name') + '&nbsp;&nbsp;',
+			'<a href="javascript:void(0)" onClick="twttr.anywhere.signOut();">Sign out of Twitter</a>'
+		].join('');
+		document.getElementById( 'tweetBox' ).innerHTML = "";
+		twitter( '#tweetBox' ).tweetBox({
+			width: 400,
+			label: '#{tweetbox_label}',
+			defaultContent: '#{tweetbox_content}'
+		});
+	} else {
+		twitter( '#connectButton' ).connectButton({
+			authComplete: function() {
+				if ( twitter.isConnected() ) {
+					var User = twitter.currentUser;
+					document.getElementById('connectButton').innerHTML = [
+						'<img src="', User.data('profile_image_url'), '"> ', User.data( 'screen_name' ) + '&nbsp;&nbsp;',
+						'<a href="javascript:void(0)" onClick="twttr.anywhere.signOut();">Sign out of Twitter</a>'
+					].join( '' );
+					document.getElementById( 'tweetBox' ).innerHTML = "";
+					twitter( '#tweetBox' ).tweetBox({
+						width: 400,
+						label: '#{tweetbox_label}',
+						defaultContent: '#{tweetbox_content}'
+					});
+				}
+			},
+			signOut: function() {
+			  location.reload();
+			}
+		});
+	}
+});
+
+</script>
